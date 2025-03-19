@@ -2,19 +2,18 @@ namespace atm.Models
 {
     public class Customer : User
     {
-        public decimal AccountBalance { get; private set; }
-        public List<string> TransactionHistory { get; private set; }
+        public int AccountBalance { get; set; }
+        public int AccountNumber { get; set; }
+        public string Status { get; set; }
+        public string AccountHolder { get; set; }
 
-        public Customer(string username, string password, decimal accountBalance) 
-            : base(username, password, "Customer")
+        public Customer(string username, string pinCode, int accountBalance, int accountNumber, string status, string accountHolder) 
+            : base(username, "Customer", pinCode)
         {
             AccountBalance = accountBalance;
-            TransactionHistory = new List<string>();
-        }
-
-        public void AddTransaction(string transaction)
-        {
-            TransactionHistory.Add(transaction);
+            AccountNumber = accountNumber;
+            Status = status;
+            AccountHolder = accountHolder;
         }
     }
 }
