@@ -4,9 +4,8 @@ namespace atm.Interfaces
 {
     public interface ICustomerService
     {
-        decimal GetBalance(User user);
-        void Deposit(User user, decimal amount);
-        void Withdraw(User user, decimal amount);
-        List<string> GetTransactionHistory(User user);
+        int GetBalance(Customer customer);
+        void Deposit(Customer customer, int amount);
+        void Withdraw(Customer customer, int amount);
     }
 }

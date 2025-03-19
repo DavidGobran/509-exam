@@ -10,8 +10,8 @@ namespace atm.DependencyInjection
         public override void Load()
         {
             Bind<IUserService>().To<UserService>().WithConstructorArgument("connectionString", "server=127.0.0.1;user=atm_user;database=midterm;password=password");
-            Bind<ICustomerService>().To<CustomerService>();
-            Bind<IAdministratorService>().To<AdministratorService>();
+            Bind<ICustomerService>().To<CustomerService>().WithConstructorArgument("connectionString", "server=127.0.0.1;user=atm_user;database=midterm;password=password");
+            Bind<IAdministratorService>().To<AdministratorService>().WithConstructorArgument("connectionString", "server=127.0.0.1;user=atm_user;database=midterm;password=password");
         }
     }
 }

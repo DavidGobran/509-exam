@@ -36,28 +36,29 @@ class Program
         // User login
         Console.WriteLine("Enter username:");
         string username = Console.ReadLine();
-        Console.WriteLine("Enter password:");
-        string password = Console.ReadLine();
+        Console.WriteLine("Enter 5-digit pin code:");
+        string pinCode = Console.ReadLine();
 
-        var user = userService.Login(username, password);
+        var user = userService.Login(username, pinCode);
         if (user == null)
         {
-            Console.WriteLine("Invalid username or password.");
+            Console.WriteLine("Invalid username or pin code.");
             return;
         }
 
         // Display menu based on user type
         if (user.UserType == "Customer")
         {
-            DisplayCustomerMenu(kernel.Get<ICustomerService>(), user);
+            var customer = new Customer(username, pinCode, 0, 0, "", "");
+            DisplayCustomerMenu(kernel.Get<ICustomerService>(), customer);
         }
         else if (user.UserType == "Administrator")
         {
-            DisplayAdministratorMenu(kernel.Get<IAdministratorService>(), user);
+            DisplayAdministratorMenu(kernel.Get<IAdministratorService>());
         }
     }
 
-    static void DisplayCustomerMenu(ICustomerService customerService, User user)
+    static void DisplayCustomerMenu(ICustomerService customerService, Customer customer)
     {
         while (true)
         {
@@ -72,16 +73,21 @@ class Program
             {
                 case "1":
                     Console.WriteLine("Enter amount to withdraw:");
-                    decimal withdrawAmount = decimal.Parse(Console.ReadLine());
-                    customerService.Withdraw(user, withdrawAmount);
+                    int withdrawAmount = int.Parse(Console.ReadLine());
+                    customerService.Withdraw(customer, withdrawAmount);
+                    int balanceAfterWithdrawal = customerService.GetBalance(customer);
+                    Console.WriteLine($"Cash Successfully Withdrawn\nAccount #{customer.AccountNumber}\nDate: {DateTime.Now:MM/dd/yyyy}\nWithdrawn: {withdrawAmount}\nBalance: {balanceAfterWithdrawal}");
                     break;
                 case "2":
                     Console.WriteLine("Enter amount to deposit:");
-                    decimal depositAmount = decimal.Parse(Console.ReadLine());
-                    customerService.Deposit(user, depositAmount);
+                    int depositAmount = int.Parse(Console.ReadLine());
+                    customerService.Deposit(customer, depositAmount);
+                    int balanceAfterDeposit = customerService.GetBalance(customer);
+                    Console.WriteLine($"Cash Deposited Successfully.\nAccount #{customer.AccountNumber}\nDate: {DateTime.Now:MM/dd/yyyy}\nDeposited: {depositAmount}\nBalance: {balanceAfterDeposit}");
                     break;
                 case "3":
-                    Console.WriteLine($"Balance: {customerService.GetBalance(user)}");
+                    decimal currentBalance = customerService.GetBalance(customer);
+                    Console.WriteLine($"Account #{customer.AccountNumber}\nDate: {DateTime.Now:MM/dd/yyyy}\nBalance: {currentBalance}");
                     break;
                 case "4":
                     return;
@@ -92,7 +98,7 @@ class Program
         }
     }
 
-    static void DisplayAdministratorMenu(IAdministratorService administratorService, User user)
+    static void DisplayAdministratorMenu(IAdministratorService administratorService)
     {
         while (true)
         {
@@ -109,29 +115,64 @@ class Program
                 case "1":
                     Console.WriteLine("Enter new customer username:");
                     string newUsername = Console.ReadLine();
-                    Console.WriteLine("Enter new customer password:");
-                    string newPassword = Console.ReadLine();
-                    administratorService.AddCustomer(new User(newUsername, newPassword, "Customer"));
+                    Console.WriteLine("Enter new customer 5-digit pin code:");
+                    string newPinCode = Console.ReadLine();
+                    if (newPinCode.Length != 5)
+                    {
+                        Console.WriteLine("Pin code must be 5 digits.");
+                        break;
+                    }
+                    Console.WriteLine("Enter new customer status:");
+                    string newStatus = Console.ReadLine();
+                    Console.WriteLine("Enter new customer account holder:");
+                    string newAccountHolder = Console.ReadLine();
+                    Console.WriteLine("Enter initial deposit amount:");
+                    int initialDeposit = int.Parse(Console.ReadLine());
+                    var newUser = new Customer(newUsername, newPinCode, initialDeposit, 0, newStatus, newAccountHolder);
+                    administratorService.AddCustomer(newUser);
+                    Console.WriteLine($"Account for {newUsername} was successfully created.");
                     break;
                 case "2":
-                    Console.WriteLine("Enter customer username to delete:");
-                    string deleteUsername = Console.ReadLine();
-                    administratorService.DeleteCustomer(deleteUsername);
+                    Console.WriteLine("Enter customer account number to delete:");
+                    int deleteAccountNumber = int.Parse(Console.ReadLine());
+                    Console.WriteLine("Re-enter customer account number to confirm deletion:");
+                    int confirmDeleteAccountNumber = int.Parse(Console.ReadLine());
+                    if (deleteAccountNumber == confirmDeleteAccountNumber)
+                    {
+                        administratorService.DeleteCustomer(deleteAccountNumber);
+                        Console.WriteLine($"Account number {deleteAccountNumber} was successfully deleted.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Account numbers do not match. Deletion cancelled.");
+                    }
                     break;
                 case "3":
-                    Console.WriteLine("Enter customer username to update:");
+                    Console.WriteLine("Enter customer account number to update:");
+                    int updateAccountNumber = int.Parse(Console.ReadLine());
+                    Console.WriteLine("Enter new username:");
                     string updateUsername = Console.ReadLine();
-                    Console.WriteLine("Enter new password:");
-                    string updatePassword = Console.ReadLine();
-                    administratorService.UpdateCustomer(new User(updateUsername, updatePassword, "Customer"));
+                    Console.WriteLine("Enter new 5-digit pin code:");
+                    string updatePinCode = Console.ReadLine();
+                    if (updatePinCode.Length != 5)
+                    {
+                        Console.WriteLine("Pin code must be 5 digits.");
+                        break;
+                    }
+                    Console.WriteLine("Enter new status:");
+                    string updateStatus = Console.ReadLine();
+                    Console.WriteLine("Enter new account holder:");
+                    string updateAccountHolder = Console.ReadLine();
+                    var updatedCustomer = new Customer(updateUsername, updatePinCode, 0, updateAccountNumber, updateStatus, updateAccountHolder);
+                    administratorService.UpdateCustomer(updatedCustomer);
                     break;
                 case "4":
-                    Console.WriteLine("Enter customer username to search:");
-                    string searchUsername = Console.ReadLine();
-                    var customer = administratorService.GetCustomer(searchUsername);
+                    Console.WriteLine("Enter customer account number to search:");
+                    int searchAccountNumber = int.Parse(Console.ReadLine());
+                    var customer = administratorService.GetCustomer(searchAccountNumber);
                     if (customer != null)
                     {
-                        Console.WriteLine($"Username: {customer.Username}, Balance: {customer.AccountBalance}");
+                        Console.WriteLine($"Username: {customer.Username}, Balance: {customer.AccountBalance}, Status: {customer.Status}, Account Holder: {customer.AccountHolder}");
                     }
                     else
                     {

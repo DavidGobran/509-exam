@@ -2,48 +2,64 @@ using System;
 using System.Collections.Generic;
 using atm.Interfaces;
 using atm.Models;
+using MySql.Data.MySqlClient;
 
 namespace atm.Services
 {
     public class CustomerService : ICustomerService
     {
-        private readonly IUserService _userService;
+        private readonly string _connectionString;
 
-        public CustomerService(IUserService userService)
+        public CustomerService(string connectionString)
         {
-            _userService = userService;
+            _connectionString = connectionString;
         }
 
-        public decimal GetBalance(User user)
+        public int GetBalance(Customer customer)
         {
-            var customer = _userService.GetUser(user.Username) as Customer;
-            return customer?.AccountBalance ?? 0;
-        }
-
-        public void Deposit(User user, decimal amount)
-        {
-            var customer = _userService.GetUser(user.Username) as Customer;
-            if (customer != null)
+            using (MySqlConnection conn = new MySqlConnection(_connectionString))
             {
-                customer.AccountBalance += amount;
-                customer.AddTransaction($"Deposited: {amount}");
+                conn.Open();
+                string query = "SELECT AccountBalance FROM Customers WHERE Username = @username";
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@username", customer.Username);
+
+                using (MySqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        return reader.GetInt32("AccountBalance");
+                    }
+                }
+            }
+            return 0;
+        }
+
+        public void Deposit(Customer customer, int amount)
+        {
+            using (MySqlConnection conn = new MySqlConnection(_connectionString))
+            {
+                conn.Open();
+                string query = "UPDATE Customers SET AccountBalance = AccountBalance + @amount WHERE Username = @username";
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@amount", amount);
+                cmd.Parameters.AddWithValue("@username", customer.Username);
+                cmd.ExecuteNonQuery();
             }
         }
 
-        public void Withdraw(User user, decimal amount)
+        public void Withdraw(Customer customer, int amount)
         {
-            var customer = _userService.GetUser(user.Username) as Customer;
-            if (customer != null && customer.AccountBalance >= amount)
+            using (MySqlConnection conn = new MySqlConnection(_connectionString))
             {
-                customer.AccountBalance -= amount;
-                customer.AddTransaction($"Withdrew: {amount}");
+                conn.Open();
+                string query = "UPDATE Customers SET AccountBalance = AccountBalance - @amount WHERE Username = @username AND AccountBalance >= @amount";
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@amount", amount);
+                cmd.Parameters.AddWithValue("@username", customer.Username);
+                cmd.ExecuteNonQuery();
             }
         }
 
-        public List<string> GetTransactionHistory(User user)
-        {
-            var customer = _userService.GetUser(user.Username) as Customer;
-            return customer?.TransactionHistory ?? new List<string>();
-        }
     }
 }
