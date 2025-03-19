@@ -2,7 +2,7 @@ namespace atm.Models
 {
     public class Customer : User
     {
-        public decimal AccountBalance { get; private set; }
+        public decimal AccountBalance { get; set; }
         public List<string> TransactionHistory { get; private set; }
 
         public Customer(string username, string password, decimal accountBalance) 

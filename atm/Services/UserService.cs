@@ -72,5 +72,31 @@ namespace atm.Services
             }
             return null;
         }
+
+        public void UpdateUser(User user)
+        {
+            using (MySqlConnection conn = new MySqlConnection(_connectionString))
+            {
+                conn.Open();
+                string query = "UPDATE Users SET Password = @password, UserType = @userType WHERE Username = @username";
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@username", user.Username);
+                cmd.Parameters.AddWithValue("@password", user.Password);
+                cmd.Parameters.AddWithValue("@userType", user.UserType);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void DeleteUser(string username)
+        {
+            using (MySqlConnection conn = new MySqlConnection(_connectionString))
+            {
+                conn.Open();
+                string query = "DELETE FROM Users WHERE Username = @username";
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@username", username);
+                cmd.ExecuteNonQuery();
+            }
+        }
     }
 }

@@ -15,7 +15,7 @@ namespace atm.Services
 
         public void AddCustomer(User user)
         {
-            var newCustomer = new Customer(user.Username, user.Password);
+            var newCustomer = new Customer(user.Username, user.Password, 0); // Assuming default account balance is 0
             _userService.Register(newCustomer);
         }
 
@@ -32,6 +32,11 @@ namespace atm.Services
         public void DeleteCustomer(string username)
         {
             _userService.DeleteUser(username);
+        }
+
+        public Customer GetCustomer(string username)
+        {
+            return _userService.GetUser(username) as Customer;
         }
     }
 }

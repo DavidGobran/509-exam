@@ -5,6 +5,7 @@ using Ninject;
 using atm.DependencyInjection;
 using atm.Interfaces;
 using atm.Services;
+using atm.Models;
 
 class Program
 {
@@ -14,7 +15,7 @@ class Program
         IKernel kernel = new StandardKernel(new DependencyInjectionConfig());
 
         // Connect to MySQL database
-        string connectionString = "server=127.0.0.1;user=root;database=midterm;password=password";
+        string connectionString = "server=127.0.0.1;user=atm_user;database=midterm;password=password";
         using (MySqlConnection conn = new MySqlConnection(connectionString))
         {
             try
