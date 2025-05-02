@@ -1,0 +1,38 @@
+name: CI + Docs
+
+on:
+  push:
+    branches: [ config ]
+  pull_request:
+    branches: [ config ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Install Doxygen
+      run: sudo apt-get install -y doxygen graphviz
+
+    - name: Install Cake
+      run: |
+        dotnet new tool-manifest
+        dotnet tool install Cake.Tool
+
+    - name: Run Cake build
+      run: dotnet cake build.cake
+
+    - name: Upload docs to GitHub Pages
+      if: github.ref == 'refs/heads/config'
+      uses: peaceiris/actions-gh-pages@v4
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./docs
