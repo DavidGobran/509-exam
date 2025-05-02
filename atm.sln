@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "atm", "atm\atm.csproj", "{FF6A3659-94D5-4914-B9B3-416F47757063}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "atm.Tests", "atm.Tests\atm.Tests.csproj", "{A72489D8-6F3E-4D4A-B92A-AE6AD81556A4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{FF6A3659-94D5-4914-B9B3-416F47757063}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF6A3659-94D5-4914-B9B3-416F47757063}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF6A3659-94D5-4914-B9B3-416F47757063}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A72489D8-6F3E-4D4A-B92A-AE6AD81556A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A72489D8-6F3E-4D4A-B92A-AE6AD81556A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A72489D8-6F3E-4D4A-B92A-AE6AD81556A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A72489D8-6F3E-4D4A-B92A-AE6AD81556A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

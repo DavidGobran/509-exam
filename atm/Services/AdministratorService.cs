@@ -8,14 +8,26 @@ namespace atm.Services
     public class AdministratorService : IAdministratorService
     {
         private readonly string _connectionString;
+        private readonly IAdministratorRepository _administratorRepository;
 
         public AdministratorService(string connectionString)
         {
             _connectionString = connectionString;
         }
 
+        public AdministratorService(IAdministratorRepository administratorRepository)
+        {
+            _administratorRepository = administratorRepository;
+        }
+
         public void AddCustomer(Customer customer)
         {
+            if (_administratorRepository != null)
+            {
+                _administratorRepository.AddCustomer(customer);
+                return;
+            }
+
             using (MySqlConnection conn = new MySqlConnection(_connectionString))
             {
                 conn.Open();
@@ -38,6 +50,12 @@ namespace atm.Services
 
         public void UpdateCustomer(Customer customer)
         {
+            if (_administratorRepository != null)
+            {
+                _administratorRepository.UpdateCustomer(customer);
+                return;
+            }
+
             using (MySqlConnection conn = new MySqlConnection(_connectionString))
             {
                 conn.Open();
@@ -60,6 +78,12 @@ namespace atm.Services
 
         public void DeleteCustomer(int accountNumber)
         {
+            if (_administratorRepository != null)
+            {
+                _administratorRepository.DeleteCustomer(accountNumber);
+                return;
+            }
+
             using (MySqlConnection conn = new MySqlConnection(_connectionString))
             {
                 conn.Open();
@@ -89,6 +113,11 @@ namespace atm.Services
 
         public Customer GetCustomer(int accountNumber)
         {
+            if (_administratorRepository != null)
+            {
+                return _administratorRepository.GetCustomer(accountNumber);
+            }
+
             using (MySqlConnection conn = new MySqlConnection(_connectionString))
             {
                 conn.Open();

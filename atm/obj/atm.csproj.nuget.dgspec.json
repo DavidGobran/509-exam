@@ -42,6 +42,16 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
+          "dependencies": {
+            "MySql.Data": {
+              "target": "Package",
+              "version": "[9.2.0, )"
+            },
+            "Ninject": {
+              "target": "Package",
+              "version": "[3.3.6, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",

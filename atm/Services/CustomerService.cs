@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using atm.Interfaces;
 using atm.Models;
 using MySql.Data.MySqlClient;
@@ -9,14 +7,23 @@ namespace atm.Services
     public class CustomerService : ICustomerService
     {
         private readonly string _connectionString;
+        private readonly ICustomerRepository _customerRepository;
 
         public CustomerService(string connectionString)
         {
             _connectionString = connectionString;
         }
 
+        public CustomerService(ICustomerRepository customerRepository)
+        {
+            _customerRepository = customerRepository;
+        }
+
         public int GetBalance(Customer customer)
         {
+            if (_customerRepository != null)
+                return _customerRepository.GetBalance(customer.Username);
+
             using (MySqlConnection conn = new MySqlConnection(_connectionString))
             {
                 conn.Open();
@@ -37,6 +44,12 @@ namespace atm.Services
 
         public void Deposit(Customer customer, int amount)
         {
+            if (_customerRepository != null)
+            {
+                _customerRepository.Deposit(customer.Username, amount);
+                return;
+            }
+
             using (MySqlConnection conn = new MySqlConnection(_connectionString))
             {
                 conn.Open();
@@ -50,6 +63,12 @@ namespace atm.Services
 
         public void Withdraw(Customer customer, int amount)
         {
+            if (_customerRepository != null)
+            {
+                _customerRepository.Withdraw(customer.Username, amount);
+                return;
+            }
+
             using (MySqlConnection conn = new MySqlConnection(_connectionString))
             {
                 conn.Open();
@@ -60,6 +79,5 @@ namespace atm.Services
                 cmd.ExecuteNonQuery();
             }
         }
-
     }
 }
