@@ -25,9 +25,18 @@
 var NAVTREE =
 [
   [ "My Project", "index.html", [
+    [ "Namespaces", "namespaces.html", [
+      [ "Namespace List", "namespaces.html", "namespaces_dup" ]
+    ] ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
-      [ "Class Index", "classes.html", null ]
+      [ "Class Index", "classes.html", null ],
+      [ "Class Hierarchy", "hierarchy.html", "hierarchy" ],
+      [ "Class Members", "functions.html", [
+        [ "All", "functions.html", null ],
+        [ "Functions", "functions_func.html", null ],
+        [ "Properties", "functions_prop.html", null ]
+      ] ]
     ] ],
     [ "Files", "files.html", [
       [ "File List", "files.html", "files_dup" ]
@@ -37,7 +46,7 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"_program_8cs.html"
+"_8_n_e_t_core_app_00_version_0av8_80_8_assembly_attributes_8cs.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';
