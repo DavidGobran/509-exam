@@ -5,21 +5,43 @@ using MySql.Data.MySqlClient;
 
 namespace atm.Services
 {
+    /// <summary>
+    /// Provides administrator-related operations.
+    /// </summary>
     public class AdministratorService : IAdministratorService
     {
+        /// <summary>
+        /// The connection string for the database.
+        /// </summary>
         private readonly string _connectionString;
+
+        /// <summary>
+        /// The repository for administrator-related data access.
+        /// </summary>
         private readonly IAdministratorRepository _administratorRepository;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AdministratorService"/> class with a connection string.
+        /// </summary>
+        /// <param name="connectionString">The database connection string.</param>
         public AdministratorService(string connectionString)
         {
             _connectionString = connectionString;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AdministratorService"/> class with a repository.
+        /// </summary>
+        /// <param name="administratorRepository">The administrator repository.</param>
         public AdministratorService(IAdministratorRepository administratorRepository)
         {
             _administratorRepository = administratorRepository;
         }
 
+        /// <summary>
+        /// Adds a new customer to the system.
+        /// </summary>
+        /// <param name="customer">The customer to add.</param>
         public void AddCustomer(Customer customer)
         {
             if (_administratorRepository != null)
@@ -48,6 +70,10 @@ namespace atm.Services
             }
         }
 
+        /// <summary>
+        /// Updates an existing customer's information.
+        /// </summary>
+        /// <param name="customer">The customer with updated information.</param>
         public void UpdateCustomer(Customer customer)
         {
             if (_administratorRepository != null)
@@ -76,6 +102,10 @@ namespace atm.Services
             }
         }
 
+        /// <summary>
+        /// Deletes a customer from the system.
+        /// </summary>
+        /// <param name="accountNumber">The account number of the customer to delete.</param>
         public void DeleteCustomer(int accountNumber)
         {
             if (_administratorRepository != null)
@@ -111,6 +141,11 @@ namespace atm.Services
             }
         }
 
+        /// <summary>
+        /// Retrieves a customer's information by account number.
+        /// </summary>
+        /// <param name="accountNumber">The account number of the customer to retrieve.</param>
+        /// <returns>The customer information, or null if not found.</returns>
         public Customer GetCustomer(int accountNumber)
         {
             if (_administratorRepository != null)

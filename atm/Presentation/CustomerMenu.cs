@@ -4,17 +4,35 @@ using atm.Models;
 
 namespace atm.Presentation
 {
+    /// <summary>
+    /// Represents the customer menu for account operations.
+    /// </summary>
     public class CustomerMenu
     {
+        /// <summary>
+        /// The service for customer-related operations.
+        /// </summary>
         private readonly ICustomerService _customerService;
+
+        /// <summary>
+        /// The customer associated with the menu.
+        /// </summary>
         private readonly Customer _customer;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CustomerMenu"/> class.
+        /// </summary>
+        /// <param name="customerService">The customer service.</param>
+        /// <param name="customer">The customer.</param>
         public CustomerMenu(ICustomerService customerService, Customer customer)
         {
             _customerService = customerService;
             _customer = customer;
         }
 
+        /// <summary>
+        /// Displays the customer menu.
+        /// </summary>
         public void Display()
         {
             while (true)
@@ -47,12 +65,18 @@ namespace atm.Presentation
             }
         }
 
+        /// <summary>
+        /// Views the balance of the customer.
+        /// </summary>
         private void ViewBalance()
         {
             int balance = _customerService.GetBalance(_customer);
             Console.WriteLine($"Your balance is: {balance}");
         }
 
+        /// <summary>
+        /// Deposits an amount into the customer's account.
+        /// </summary>
         private void Deposit()
         {
             Console.Write("Enter amount to deposit: ");
@@ -61,6 +85,9 @@ namespace atm.Presentation
             Console.WriteLine("Deposit successful.");
         }
 
+        /// <summary>
+        /// Withdraws an amount from the customer's account.
+        /// </summary>
         private void Withdraw()
         {
             Console.Write("Enter amount to withdraw: ");
