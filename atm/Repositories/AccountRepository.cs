@@ -6,15 +6,29 @@ using MySql.Data.MySqlClient;
 
 namespace atm.Repositories
 {
+    /// <summary>
+    /// Provides data access methods for customer accounts.
+    /// </summary>
     public class AccountRepository : IAccountRepository
     {
+        /// <summary>
+        /// The connection string for the database.
+        /// </summary>
         private readonly string _connectionString;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AccountRepository"/> class.
+        /// </summary>
+        /// <param name="connectionString">The database connection string.</param>
         public AccountRepository(string connectionString)
         {
             _connectionString = connectionString;
         }
 
+        /// <summary>
+        /// Adds a new account for a customer.
+        /// </summary>
+        /// <param name="customer">The customer whose account is to be added.</param>
         public void AddAccount(Customer customer)
         {
             using (MySqlConnection conn = new MySqlConnection(_connectionString))
@@ -30,6 +44,10 @@ namespace atm.Repositories
             }
         }
 
+        /// <summary>
+        /// Updates an existing account for a customer.
+        /// </summary>
+        /// <param name="customer">The customer whose account is to be updated.</param>
         public void UpdateAccount(Customer customer)
         {
             using (MySqlConnection conn = new MySqlConnection(_connectionString))
@@ -45,6 +63,10 @@ namespace atm.Repositories
             }
         }
 
+        /// <summary>
+        /// Deletes an account by account number.
+        /// </summary>
+        /// <param name="accountNumber">The account number of the account to be deleted.</param>
         public void DeleteAccount(int accountNumber)
         {
             using (MySqlConnection conn = new MySqlConnection(_connectionString))
@@ -57,6 +79,11 @@ namespace atm.Repositories
             }
         }
 
+        /// <summary>
+        /// Retrieves an account by account number.
+        /// </summary>
+        /// <param name="accountNumber">The account number of the account to be retrieved.</param>
+        /// <returns>The customer account details, or null if not found.</returns>
         public Customer GetAccount(int accountNumber)
         {
             using (MySqlConnection conn = new MySqlConnection(_connectionString))

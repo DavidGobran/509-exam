@@ -4,15 +4,28 @@ using atm.Models;
 
 namespace atm.Presentation
 {
+    /// <summary>
+    /// Represents the administrator menu for managing customers.
+    /// </summary>
     public class AdminMenu
     {
+        /// <summary>
+        /// The service for administrator-related operations.
+        /// </summary>
         private readonly IAdministratorService _administratorService;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AdminMenu"/> class.
+        /// </summary>
+        /// <param name="administratorService">The administrator service.</param>
         public AdminMenu(IAdministratorService administratorService)
         {
             _administratorService = administratorService;
         }
 
+        /// <summary>
+        /// Displays the administrator menu.
+        /// </summary>
         public void Display()
         {
             while (true)
@@ -49,6 +62,9 @@ namespace atm.Presentation
             }
         }
 
+        /// <summary>
+        /// Adds a new customer.
+        /// </summary>
         private void AddCustomer()
         {
             Console.Write("Enter username: ");
@@ -71,6 +87,9 @@ namespace atm.Presentation
             Console.WriteLine("Customer added successfully.");
         }
 
+        /// <summary>
+        /// Updates an existing customer.
+        /// </summary>
         private void UpdateCustomer()
         {
             Console.Write("Enter account number: ");
@@ -99,6 +118,9 @@ namespace atm.Presentation
             Console.WriteLine("Customer updated successfully.");
         }
 
+        /// <summary>
+        /// Deletes a customer.
+        /// </summary>
         private void DeleteCustomer()
         {
             Console.Write("Enter account number: ");
@@ -108,6 +130,9 @@ namespace atm.Presentation
             Console.WriteLine("Customer deleted successfully.");
         }
 
+        /// <summary>
+        /// Views a customer's details.
+        /// </summary>
         private void ViewCustomer()
         {
             Console.Write("Enter account number: ");
