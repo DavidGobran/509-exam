@@ -2,9 +2,7 @@ name: CI + Docs
 
 on:
   push:
-    branches: [ config ]
   pull_request:
-    branches: [ config ]
 
 jobs:
   build:
